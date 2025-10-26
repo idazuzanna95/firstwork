@@ -27,13 +27,13 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-slate-900 to-black">
       <main className="w-full max-w-4xl px-8 py-16">
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-slate-900 mb-3">
+          <h1 className="text-5xl font-bold text-white mb-3">
             Rasy Kotów
           </h1>
-          <p className="text-slate-600 text-lg">
+          <p className="text-gray-400 text-lg">
             Wybierz swoją ulubioną rasę kota
           </p>
         </div>
@@ -43,11 +43,11 @@ export default function Home() {
             <button
               key={breed}
               onClick={() => handleClick(breed)}
-              className="group relative overflow-hidden rounded-2xl bg-white px-6 py-8 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 active:scale-95"
+              className="group relative overflow-hidden rounded-2xl bg-slate-800 px-6 py-8 shadow-lg shadow-black/50 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 active:scale-95 border border-slate-700 hover:border-purple-500/50"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative">
-                <p className="text-slate-800 font-medium text-center leading-snug">
+                <p className="text-gray-100 font-medium text-center leading-snug">
                   {breed}
                 </p>
               </div>
