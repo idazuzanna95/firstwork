@@ -19,15 +19,35 @@ const catBreeds = [
 
 export default function Home() {
   const [showBengal, setShowBengal] = useState(false);
+  const [message, setMessage] = useState('');
+  const [attempts, setAttempts] = useState(0);
+
+  const wrongMessages = [
+    'Hmm... nie ten!',
+    'Spróbuj jeszcze raz!',
+    'Nie, to nie ten kot!',
+    'Nieee, szukaj dalej!',
+    'Ciepło... ale nie!',
+    'Może inny?',
+    'Nie trafione!',
+    'Blisko, ale jednak nie!',
+  ];
 
   const handleClick = (breed: string) => {
     if (breed === 'Bengal') {
       confetti({
-        particleCount: 100,
-        spread: 70,
+        particleCount: 150,
+        spread: 100,
         origin: { y: 0.6 },
+        colors: ['#a855f7', '#3b82f6', '#fbbf24', '#ec4899'],
       });
       setShowBengal(true);
+      setMessage('');
+    } else {
+      setAttempts(prev => prev + 1);
+      const randomMessage = wrongMessages[Math.floor(Math.random() * wrongMessages.length)];
+      setMessage(randomMessage);
+      setTimeout(() => setMessage(''), 2000);
     }
   };
 
@@ -36,11 +56,25 @@ export default function Home() {
       <main className="w-full max-w-4xl px-8 py-16">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-white mb-3">
-            Rasy Kotów
+            Który Kot Jest Najfajniejszy?
           </h1>
-          <p className="text-gray-400 text-lg">
-            Wybierz swoją ulubioną rasę kota
+          <p className="text-gray-400 text-lg mb-2">
+            Odgadnij, który kot ma magiczną moc!
           </p>
+          {attempts > 0 && !showBengal && (
+            <p className="text-purple-400 text-sm">
+              Próby: {attempts}
+            </p>
+          )}
+
+          {/* Message notification */}
+          {message && (
+            <div className="mt-4 animate-fade-in">
+              <p className="text-red-400 text-xl font-bold bg-red-400/10 border border-red-400/30 rounded-xl px-6 py-3 inline-block shake">
+                {message}
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -48,7 +82,7 @@ export default function Home() {
             <button
               key={breed}
               onClick={() => handleClick(breed)}
-              className="group relative overflow-hidden rounded-2xl bg-slate-800 px-6 py-8 shadow-lg shadow-black/50 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 active:scale-95 border border-slate-700 hover:border-purple-500/50"
+              className="group relative overflow-hidden rounded-2xl px-6 py-8 shadow-lg shadow-black/50 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 active:scale-95 border bg-slate-800 border-slate-700 hover:border-purple-500/50"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative">
@@ -88,9 +122,16 @@ export default function Home() {
                 className="w-full h-auto"
                 priority
               />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                <h2 className="text-3xl font-bold text-white mb-2">Bengal</h2>
-                <p className="text-gray-200">Piękny kot rasy Bengal!</p>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6">
+                <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-2">
+                  🎉 Gratulacje! 🎉
+                </h2>
+                <p className="text-white text-xl font-semibold mb-1">
+                  Znalazłeś najfajniejszego kota - Bengal!
+                </p>
+                <p className="text-gray-300 text-sm">
+                  Liczba prób: {attempts}
+                </p>
               </div>
             </div>
           </div>
