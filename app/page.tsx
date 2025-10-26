@@ -21,6 +21,7 @@ export default function Home() {
   const [showBengal, setShowBengal] = useState(false);
   const [message, setMessage] = useState('');
   const [attempts, setAttempts] = useState(0);
+  const [flippedCard, setFlippedCard] = useState<string | null>(null);
 
   const wrongMessages = [
     'Hmm... nie ten!',
@@ -47,7 +48,11 @@ export default function Home() {
       setAttempts(prev => prev + 1);
       const randomMessage = wrongMessages[Math.floor(Math.random() * wrongMessages.length)];
       setMessage(randomMessage);
-      setTimeout(() => setMessage(''), 2000);
+      setFlippedCard(breed);
+      setTimeout(() => {
+        setFlippedCard(null);
+        setMessage('');
+      }, 2000);
     }
   };
 
@@ -66,32 +71,41 @@ export default function Home() {
               Próby: {attempts}
             </p>
           )}
-
-          {/* Message notification */}
-          {message && (
-            <div className="mt-4 animate-fade-in">
-              <p className="text-red-400 text-xl font-bold bg-red-400/10 border border-red-400/30 rounded-xl px-6 py-3 inline-block shake">
-                {message}
-              </p>
-            </div>
-          )}
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {catBreeds.map((breed) => (
-            <button
-              key={breed}
-              onClick={() => handleClick(breed)}
-              className="group relative overflow-hidden rounded-2xl px-6 py-8 shadow-lg shadow-black/50 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 active:scale-95 border bg-slate-800 border-slate-700 hover:border-purple-500/50"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="relative">
-                <p className="text-gray-100 font-medium text-center leading-snug">
-                  {breed}
-                </p>
+          {catBreeds.map((breed) => {
+            const isFlipped = flippedCard === breed;
+            return (
+              <div key={breed} className="card-container" style={{ minHeight: '140px' }}>
+                <div className={`card ${isFlipped ? 'flipped' : ''}`}>
+                  {/* Front of card */}
+                  <div className="card-front">
+                    <button
+                      onClick={() => handleClick(breed)}
+                      className="group relative overflow-hidden rounded-2xl px-6 py-8 shadow-lg shadow-black/50 transition-all duration-200 hover:shadow-2xl hover:shadow-purple-500/20 border bg-slate-800 border-slate-700 hover:border-purple-500/50 w-full h-full"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="relative">
+                        <p className="text-gray-100 font-medium text-center leading-snug">
+                          {breed}
+                        </p>
+                      </div>
+                    </button>
+                  </div>
+
+                  {/* Back of card */}
+                  <div className="card-back">
+                    <div className="rounded-2xl px-6 py-8 shadow-lg border bg-red-900/50 border-red-500/50 w-full h-full flex items-center justify-center">
+                      <p className="text-red-200 text-lg font-bold text-center shake">
+                        {message}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </button>
-          ))}
+            );
+          })}
         </div>
       </main>
 
